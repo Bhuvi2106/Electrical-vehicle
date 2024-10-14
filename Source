@@ -1,0 +1,623 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "03feb882-f461-470d-b2d0-a8c05805a432",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "3cef7a09-5a57-4439-86b7-796828cc1c92",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import matplotlib.pyplot as plt\n",
+    "import seaborn as sns"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b2cae34c-f93a-45e1-8345-64f997203991",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import plotly.express as px\n",
+    "import warnings\n",
+    "warnings.filterwarnings('ignore')\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "95d13c82-0a21-4f24-8e4b-31c047974c13",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df=pd.read_csv(r\"C:\\Users\\ravik\\Downloads\\dataset (1).csv\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "fab43789-2a61-4b74-9226-0566ff568a6d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9acc0866-8ed8-40c9-890f-a6437344383e",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "facf5418-cafd-4b66-9a58-7e5cab5ed4b5",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df.describe"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7820ae61-0ba3-43c5-abaa-b159a4a32fe4",
+   "metadata": {},
+   "source": [
+    "### Explooratory data Analysis"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7876f1f9-8e3c-4cbe-86ee-a505e9b20bc2",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df.isna().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b91d18a1-778c-4dc8-8eb2-02a3ba046ee8",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df.duplicated().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "6af1ee5b-5e61-44d8-9eac-fe79f0f62ba3",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df['Model']=df['Model'].fillna(df['Model'].mode()[0])\n",
+    "df['Legislative District']=df['Legislative District'].fillna(df['Legislative District'].mode()[0])\n",
+    "df['Vehicle Location']=df['Vehicle Location'].fillna(df['Vehicle Location'].mode()[0])\n",
+    "df['Electric Utility']=df['Electric Utility'].fillna(df['Electric Utility'].mode()[0])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c024744e-1c2f-472a-907f-14ecc48c9596",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df.isna().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "15080994-c3b8-405e-a9ad-33f346c7b51a",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df.to_csv(\"Electric _Vehicle_data\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "d44c2945-8f76-44b1-aa54-dff02a162df1",
+   "metadata": {},
+   "source": [
+    "### Task1"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "bd53e810-c7b9-45f4-b605-1ca02db95392",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df.info()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d6411738-25bb-4742-829b-3d8822e59de4",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df.columns"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "40cff445-b09a-4fbc-aaa6-e011e2116154",
+   "metadata": {},
+   "source": [
+    "### univariante Analysis"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a256616a-c35e-4300-b2ab-80bc9cbc60f9",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.figure(figsize=(10,6))\n",
+    "sns.histplot(df['Model Year'],bins=20,kde=True,color='#FF5733',edgecolor='black')\n",
+    "plt.title('Distribution of Model Year',fontsize=16,fontweight='bold',color='#333')\n",
+    "plt.xlabel('Model Year', fontsize=12,fontweight='medium')\n",
+    "plt.ylabel('Frequency', fontsize=12,fontweight='medium')\n",
+    "plt.xticks(fontsize=10)\n",
+    "plt.yticks(fontsize=10)\n",
+    "plt.grid(True,linestyle='--',alpha=0.6)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1ad0e1f2-7512-4bee-9167-4a25af922a34",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.figure(figsize=(10,6))\n",
+    "sns.histplot(df['Electric Range'],bins=20,kde=True,color='#800000',edgecolor='black')\n",
+    "plt.title('Distribution Electric Range',fontsize=16,fontweight='bold',color='#333')\n",
+    "plt.xlabel('Electric Range', fontsize=12,fontweight='medium')\n",
+    "plt.ylabel('Frequency', fontsize=12,fontweight='medium')\n",
+    "plt.xticks(rotation=10,fontsize=12)\n",
+    "plt.yticks(fontsize=10)\n",
+    "plt.grid(True,linestyle='--',alpha=0.6)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9533c823-b2c4-45f4-be1d-3d3a6eb38076",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.figure(figsize=(10,6))\n",
+    "sns.histplot(df['Base MSRP'],bins=20,kde=True,color='#FF5733',edgecolor='black')\n",
+    "plt.title('Distribution of Base MSRP',fontsize=16,fontweight='bold',color='#333')\n",
+    "plt.xlabel('Base MSRP($)', fontsize=12,fontweight='medium')\n",
+    "plt.ylabel('Frequency', fontsize=12,fontweight='medium')\n",
+    "plt.xticks(fontsize=10)\n",
+    "plt.yticks(fontsize=10)\n",
+    "plt.grid(True,linestyle='--',alpha=0.6)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "38659114-e87f-4312-aecb-3d11957532c7",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.figure(figsize=(10,6))\n",
+    "sns.histplot(df['2020 Census Tract'],bins=20,kde=True,color='#FF5733',edgecolor='black')\n",
+    "plt.title('Distribution of 2020 Census Tract',fontsize=16,fontweight='bold',color='#333')\n",
+    "plt.xlabel('2020 Census Tract', fontsize=12,fontweight='medium')\n",
+    "plt.ylabel('Frequency', fontsize=12,fontweight='medium')\n",
+    "plt.xticks(fontsize=10)\n",
+    "plt.yticks(fontsize=10)\n",
+    "plt.grid(True,linestyle='--',alpha=0.6)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "cef08d2f-7893-4160-a101-1819391149a9",
+   "metadata": {},
+   "source": [
+    "### Bivariate Analysis"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "725e5e20-14e1-413e-af55-75385caa11de",
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "plt.figure(figsize=(10,6))\n",
+    "sns.boxplot(x='Electric Vehicle Type',y='Electric Range',data=df,palette='Set2')\n",
+    "plt.title('Electrical vehicle type vs Electrical Range',fontsize='16',fontweight='bold',color='#333')\n",
+    "plt.xlabel('Electric Vehicle Type', fontsize=12,fontweight='medium')\n",
+    "plt.ylabel('Electric Range', fontsize=12,fontweight='medium')\n",
+    "plt.xticks(rotation=10,fontsize=10)\n",
+    "plt.grid(True,linestyle='--',alpha=0.6)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5bc7b03a-1046-4ce9-927e-9c6676e806ee",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.figure(figsize=(10,6))\n",
+    "top_makes=df['Make'].value_counts().nlargest(10).index\n",
+    "sns.boxplot(x='Make',y='Base MSRP',data=df[df['Make'].isin(top_makes)],palette='coolwarm')\n",
+    "plt.title('Top 10 vehicle makes vsBase MSRP',fontsize='16',fontweight='bold',color='#333')\n",
+    "plt.xlabel('vehicle Make', fontsize=12,fontweight='medium')\n",
+    "plt.ylabel('Base MSRP', fontsize=12,fontweight='medium')\n",
+    "plt.xticks(rotation=90,fontsize=10)\n",
+    "plt.grid(True,linestyle='--',alpha=0.6)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "30f3d315-f863-4b54-97cc-f7d1c0d6cc3c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "plt.figure(figsize=(10,6))\n",
+    "sns.barplot(x='Electric Vehicle Type',y='Model Year',data=df,palette='plasma')\n",
+    "plt.title('Distribution of Electrical vehicle Type based on Model Year',fontsize='16',fontweight='bold',color='#333')\n",
+    "plt.xlabel('Electric Vehicle Type', fontsize=12,fontweight='medium')\n",
+    "plt.ylabel('Model Year', fontsize=12,fontweight='medium')\n",
+    "plt.xticks(rotation=90,fontsize=10)\n",
+    "plt.grid(True,linestyle='--',alpha=0.6)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "79d6b4af-710b-453c-aabf-0a83ab61be5c",
+   "metadata": {},
+   "source": [
+    "### Task2"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f952e2fb-7733-41c8-b0a3-6888ec7f2008",
+   "metadata": {},
+   "source": [
+    "## create choropleth using plotly.express to display the number of Electrical vehicles based on location"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "87488237-6ff6-4eb2-a4a6-19a62378ee8c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    " state_data=df.groupby('State')['VIN (1-10)'].count().reset_index()\n",
+    "state_data.columns=['State','EV Count']\n",
+    "fig=px.choropleth(state_data,\n",
+    "                  locations='State',\n",
+    "                  locationmode='USA-states',\n",
+    "                  color='EV Count',\n",
+    "                  color_continuous_scale='Purples',\n",
+    "                  scope='usa',\n",
+    "                  labels={'EV Count':'Number of EV vehicles'},\n",
+    "                  title='number of Electric Vehicles by state')\n",
+    "fig.show()\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9ad2b646-5e36-4d47-8572-48f057051732",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "count_by_state=df.groupby('State').size().reset_index(name=\"count\")\n",
+    "fig=px.choropleth(count_by_state,\n",
+    "                  locations='State',\n",
+    "                    color='count',\n",
+    "                  locationmode='USA-states',\n",
+    "                  scope='usa',\n",
+    "                  labels={' Count':'No of EV'},\n",
+    "                  title='number of Electric Vehicles by state')\n",
+    "fig.update_layout(\n",
+    "    geo=dict(bgcolor='rgba(0,0,0,0)'),\n",
+    "    title_x=0.5\n",
+    ")\n",
+    "fig.show()\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "71eb9eb7-eed3-4bf7-b46d-495f14b14614",
+   "metadata": {},
+   "source": [
+    "## Boxplot using plotly.express"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "294cf7ea-9ba7-4e31-b4fb-07e25be5b0fe",
+   "metadata": {},
+   "source": [
+    "Note:Box plot can be used to create a univariante or bivariante plot.for a univariate box plot,the column type should be real\n",
+    "numeriacal.For a bivariate box plot,one column should becategoriacal and another column should be real numeriacals.Below is an \n",
+    "example of code for bivariate box plot."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "ceb61deb-0ee1-4fd4-99bf-af1225c972b7",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig=px.box(df,\n",
+    "           x='Electric Vehicle Type',\n",
+    "           y='Base MSRP',\n",
+    "           title='Box plot Base MSRP by Electrical Vehicle Type',\n",
+    "           labels={'Base MSRP':'Base MSRP($)','Electrical Vehicle Type':'EV Type'},\n",
+    "           hover_data=['Make','Model']\n",
+    "          )\n",
+    "fig.update_layout(\n",
+    "    title_font_size=20,\n",
+    "    xaxis_title_font_size=14,\n",
+    "    yaxis_title_font_size=14,\n",
+    "    xaxis_tickangle=-45,\n",
+    "    margin=dict(l=40,r=40,t=40,b=40))\n",
+    "\n",
+    "fig.show()\n",
+    "\n",
+    "    \n",
+    "            "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "cf5eea6e-d78c-4a5e-b8bc-a553d796b041",
+   "metadata": {},
+   "source": [
+    "## pie chart"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "72727c35-e073-4d0b-ab41-b13177d6e54b",
+   "metadata": {},
+   "source": [
+    "note:pie chart plot can be used to create a bivariante plot.for a bhvariante piechart plot,one column categorical and another column should be real \n",
+    "numeriacalBelow is an example of code for the plot should becategorical colimn values:it should be numeric column"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "8ee3e738-84b8-495e-8d65-f0816a58317c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "vehicle_type_count=df.groupby('Electric Vehicle Type')['VIN (1-10)'].count().reset_index()\n",
+    "vehicle_type_count.columns=['Electric Vehicle Type','Count']\n",
+    "fig=px.pie(vehicle_type_count,\n",
+    "           names='Electric Vehicle Type',\n",
+    "           values='Count',\n",
+    "            title='Distribution of Electrical vehicle by Type',\n",
+    "            labels={'Electric Vehicle Type':'EV Type','Count':'Number of vehicles'},\n",
+    "            hole=0.3,\n",
+    "            color_discrete_sequence=px.colors.sequential.Plasma)\n",
+    "fig.update_traces(textinfo='percent+label')\n",
+    "fig.update_layout(title_font_size=20,margin=dict(l=40,r=40,t=40,b=40))\n",
+    "fig.show()\n",
+    "\n",
+    "\n",
+    "           "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "18290061-09fc-47ed-972f-fa050c6ea800",
+   "metadata": {},
+   "source": [
+    "## Task3"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "98dd9cc7-48a7-4ef6-804b-3250db4f5931",
+   "metadata": {},
+   "source": [
+    "## creating a racing barplot to display the information of EV Make and its count each year"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "19668d68-f651-49ea-9737-b5f77d7859bf",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "!pip install bar-chart-race"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "20973620-d496-45fa-b7fe-2cc326eb3991",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "make_year_data=df.groupby(['Model Year','Make'])['VIN (1-10)'].count().reset_index()\n",
+    "make_year_data.columns=(['Model Year','Make','Count'])\n",
+    "fig=px.bar(make_year_data,\n",
+    "           x='Make',\n",
+    "           y='Count',\n",
+    "           color='Make',\n",
+    "           animation_frame='Model Year',\n",
+    "           animation_group='Make',\n",
+    "           range_y=[0,make_year_data['Count'].max()+50],\n",
+    "           title='Electric Vehicle Makes over Time',\n",
+    "           labels={'Count':'Number of Vehicles','Make':'EV Make'},\n",
+    "           text='Count')\n",
+    "fig.update_layout(title_font_size=20,\n",
+    "                  xaxis_title_font_size=14,\n",
+    "                  yaxis_title_font_size=14,\n",
+    "                  legend_title_text='Electric vehicle Make',\n",
+    "                  margin=dict(l=40,r=40,t=40,b=40))\n",
+    "fig.update_traces(texttemplate='%(text:1s)',textposition='outside')\n",
+    "fig.show()\n",
+    "                           "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "39dad1d1-a4e0-4ccd-84ea-6f2b29062fd6",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import bar_chart_race as bcr"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a4874f4e-b324-4f39-b3ae-09dca1aeb9fc",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df.columns"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "17226309-2ddc-4114-9791-3865a0b5b3fb",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "car_per_year=df.groupby(['Make','Model Year']).size().reset_index(name='number_of_vehicles')\n",
+    "print(car_per_year)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "abf2bbb7-8ffa-43bc-ae63-b9446cc1d4fe",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# creating a racing bar plot with animations"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "eced0499-ac18-4c73-b4f3-6bd72bd5053a",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fig=px.bar(car_per_year,\n",
+    "           y='Make',\n",
+    "           x='number_of_vehicles',\n",
+    "           color='Make',\n",
+    "           animation_frame='Model Year',\n",
+    "           orientation='h',\n",
+    "           title='EV Makes and their count over the  years',\n",
+    "           labels={'number_of_vehicles':'Number of EV vehicles'},\n",
+    "            range_x=[0,3000]\n",
+    "            )\n",
+    "fig.update_traces(texttemplate='%(x)',\n",
+    "                   textposition='outside',\n",
+    "                   textfont_size=16)\n",
+    "#Adjust the layout for improved visibility and emphasis on \n",
+    "fig.update_layout(\n",
+    "    xaxis=dict(showgrid=True,gridcolor='LightGray'),\n",
+    "    yaxis_title='EV Makes',\n",
+    "    xaxis_title='Number of EV Vehicles',\n",
+    "    showlegend=False,\n",
+    "    title_x=0.5,\n",
+    "    title_font=dict(size=20),\n",
+    "    margin=dict(l=50,r=50,t=50,b=50),\n",
+    "    width=800,\n",
+    "    height=600\n",
+    "    )\n",
+    "fig.show()\n",
+    "\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c0b2681a-6a74-4df2-ad7f-455ed0c43db8",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4bf8bb5c-a276-4fba-8a67-4c9bd6f7cbd8",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.12.4"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
